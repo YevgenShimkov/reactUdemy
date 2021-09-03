@@ -3,7 +3,8 @@
  * @returns по сути мы создали функцию, которая возвращает разметку HTML
  *  И этот файл App.js и есть компонентом
  */
-import ExpanseItem from "./components/ExpenseItem";
+import NewExpense from "./components/NewExpense/NewExpense";
+import Expenses from "./components/Expenses/Expenses";
 
 const expenses = [
   {
@@ -27,15 +28,27 @@ const expenses = [
   },
 ];
 
+/**
+ * функция которая принимает новые данные
+ * @returns 
+ */
 
-function App() {
+const addExpenseHandler = expense => { // expense это NewExpense.js props.onAddExpense(expenseDate);
+  console.log('in App.js');
+  console.log(expense);
+};
+
+/** 
+ * основной запуск
+ * передаем данные для заполнения данными расходов
+ * @returns 
+ */
+const App = () => {
   return (
     <div>
-      <h2>Let's get started!</h2>
-      <ExpanseItem title={expenses[0].title} amount={expenses[0].amount} date={expenses[0].date}></ExpanseItem>
-      <ExpanseItem title={expenses[1].title} amount={expenses[1].amount} date={expenses[1].date}></ExpanseItem>
-      <ExpanseItem title={expenses[2].title} amount={expenses[2].amount} date={expenses[2].date}></ExpanseItem>
-      <ExpanseItem title={expenses[3].title} amount={expenses[3].amount} date={expenses[3].date}></ExpanseItem>
+      <NewExpense onAddExpense={addExpenseHandler}/> {/*  когда сработает NewExpense тогда и сработает addExpenseHandler */}
+      {/* отрисовываем HTML на основе полученных данных expenses, expenses в даном случае отправляються как параметр в Expenses.js */}
+      <Expenses item={expenses} />
     </div>
   );
 }

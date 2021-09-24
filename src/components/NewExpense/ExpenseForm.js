@@ -30,7 +30,7 @@ const ExpenseForm = (props) => { // props - its - onSaveExpenseData
         //     enteredTitle: event.target.value, // меняем нужное нам значение
         // });
         // Alternative 2 (better, в случае когда мы учитываем предыдущие состояния, этот метод безопасней)
-        // setUserInput((prevState) => { // как аргумент получаем, предыдущее состояние 
+        // setUserInput((prevState) => { // как аргумент получаем, последнее предыдущее состояние 
         //     return {...prevState, enteredTitle: event.target.value}; //сначала перезаписываем старые данные, потом меняем нужную нам строку
         // });
     }
@@ -52,7 +52,7 @@ const ExpenseForm = (props) => { // props - its - onSaveExpenseData
 
         const expenseDate = {
             title: enteredTitle,
-            amount: enteredAmount,
+            amount: +enteredAmount,
             date: new Date(enteredDate) // через конструктор, что бы дата преобразовалась
         }
 
@@ -82,6 +82,7 @@ const ExpenseForm = (props) => { // props - its - onSaveExpenseData
             </div>
         </div>
         <div className="new-expense__actions">
+            <button type='button'onClick={props.onCancel}>Cancel</button> {/* отменяем форму и возвращаем форму с add */}
             <button type='submit'  >Add Exprense</button>
         </div>
     </form>

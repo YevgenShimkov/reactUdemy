@@ -8,7 +8,7 @@ import './Card.css';
  * @returns 
  */
 const Card = (props) => {
-    const classes = 'card ' + props.className;
+    const classes = 'card ' + props.className; // передаем название вложенного div
     return <div className={classes}>{props.children}</div>; // children здесь, это всё, что между {} в коде.
 }
 

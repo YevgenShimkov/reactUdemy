@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 /**
  * 
  * @returns по сути мы создали функцию, которая возвращает разметку HTML
@@ -6,7 +8,7 @@
 import NewExpense from "./components/NewExpense/NewExpense";
 import Expenses from "./components/Expenses/Expenses";
 
-const expenses = [
+const DUMMY_EXPENSES = [
   {
     id: 'e1',
     title: 'Toilet Paper',
@@ -33,10 +35,6 @@ const expenses = [
  * @returns 
  */
 
-const addExpenseHandler = expense => { // expense это NewExpense.js props.onAddExpense(expenseDate);
-  console.log('in App.js');
-  console.log(expense);
-};
 
 /** 
  * основной запуск
@@ -44,11 +42,19 @@ const addExpenseHandler = expense => { // expense это NewExpense.js props.onA
  * @returns 
  */
 const App = () => {
-  return (
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSES) // фиксируем состояние переменной DUMMY_EXPENSES
+ 
+  const addExpenseHandler = (expense) => { // expense(новый элемент) это NewExpense.js props.onAddExpense(expenseDate); срабатывает когда добавляем элемент
+    setExpenses((prevExpenses) => {
+      return [expense, ...prevExpenses]; // создаем новый массив, записываем новое значение, и потом переносим все старые
+    });
+  };
+  
+  return ( // основное, что мы возвращаем
     <div>
-      <NewExpense onAddExpense={addExpenseHandler}/> {/*  когда сработает NewExpense тогда и сработает addExpenseHandler */}
+      <NewExpense onAddExpense={addExpenseHandler} /> {/*  когда сработает NewExpense тогда и сработает addExpenseHandler */}
       {/* отрисовываем HTML на основе полученных данных expenses, expenses в даном случае отправляються как параметр в Expenses.js */}
-      <Expenses item={expenses} />
+      <Expenses item={expenses} /> {/* передаем список расходов */}
     </div>
   );
 }

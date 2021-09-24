@@ -1,48 +1,44 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 
-import ExpanseItem from "./ExpenseItem";
+import ExpenseList from "./ExpensesList";
 import ExpensesFilter from "./ExpensesFilter";
 import Card from "../UI/Card";
+import ExpensesChart from "./ExpensesChart";
 import "./Expenses.css";
 
 /**
  * отрисовываем полученные исходные данные
  * так же, отсюда мы управляем ExpensesFilter, устанавливаем год поу молчанию и изменяем выбранный год
- * @param {данные расходов} props 
+ * @param {данные расходов item={expenses} }  props 
  * @returns 
  */
 const Expenses = (props) => {
     const [filteredYear, setFilteredYear] = useState('2020') // по умолчанию
 
+    // когда в фильтре выбираем другой год, перерисовывается выбранный год
     const choiseFilterHandler = selectedYear => {
         setFilteredYear(selectedYear);
     };
+
+    /**
+     * создаем фильтр по указанному году
+     * основной массив не изменяеться
+     * expense.date будут только те расходы, которые сделаны в указанном году
+     */
+    const filteredExpenses = props.item.filter(expense => {
+        if(filteredYear==='all') {
+            return expense.date;
+        }
+        return expense.date.getFullYear().toString() === filteredYear;
+    });
 
     // selected={filteredYear} добавляем атрибут, что бы можно было указывать год по умолчанию
     return (
         <div>
             <Card className="expenses">
-                <ExpensesFilter selected={filteredYear} onChoiceFilter={choiseFilterHandler}/>
-                <ExpanseItem
-                    title={props.item[0].title}
-                    amount={props.item[0].amount}
-                    date={props.item[0].date}>
-                </ExpanseItem>
-                <ExpanseItem
-                    title={props.item[1].title}
-                    amount={props.item[1].amount}
-                    date={props.item[1].date}>
-                </ExpanseItem>
-                <ExpanseItem
-                    title={props.item[2].title}
-                    amount={props.item[2].amount}
-                    date={props.item[2].date}>
-                </ExpanseItem>
-                <ExpanseItem
-                    title={props.item[3].title}
-                    amount={props.item[3].amount}
-                    date={props.item[3].date}>
-                </ExpanseItem>
+                <ExpensesFilter selected={filteredYear} onChoiceFilter={choiseFilterHandler} />
+                <ExpensesChart expenses= {filteredExpenses}/>
+                <ExpenseList items= {filteredExpenses} /> {/*  как параметр передаем отфильтрованные данные по году */}
             </Card>
         </div>
     );
